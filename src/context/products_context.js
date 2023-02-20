@@ -18,8 +18,7 @@ const initialState = {
   products_loading: false,
   products_error: false,
   products: [],
-  featured_produtcs: []
-
+  featured_products: [],
 }
 
 const ProductsContext = React.createContext()
@@ -40,10 +39,12 @@ export const ProductsProvider = ({ children }) => {
     dispatch({ type: GET_PRODUCTS_BEGIN })
     try {
       const response = await axios(url)
-      const products = response.data
+      const products = await response.data
+
       dispatch({ type: GET_PRODUCTS_SUCCESS, payload: products })
     } catch (error) {
-      dispatch({ type: GET_PRODUCTS_ERROR, payload: error })
+      dispatch({ type: GET_PRODUCTS_ERROR })
+      console.log(error)
     }
 
   }

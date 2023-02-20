@@ -33,13 +33,14 @@ const products_reducer = (state, action) => {
   }
 
   if (type === GET_PRODUCTS_SUCCESS) {
-    const featured_produtcs = payload.filter(product => product.featured === true)
+    const featured_products = payload.filter(product => product.featured === true);
+
 
     return {
       ...state,
       products_loading: false,
       products: payload,
-      featured_produtcs
+      featured_products
     }
   }
 
