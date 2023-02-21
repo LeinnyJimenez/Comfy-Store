@@ -74,7 +74,7 @@ export const ProductsProvider = ({ children }) => {
         ...state,
         openSidebar,
         closeSidebar,
-        fetchProducts
+        fetchSingleProduct
       }
     }>
       {children}
