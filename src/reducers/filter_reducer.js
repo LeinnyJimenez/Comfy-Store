@@ -10,7 +10,16 @@ import {
 } from '../actions'
 
 const filter_reducer = (state, action) => {
-  return state
+
+  const { type, payload } = action;
+
+  if (type === LOAD_PRODUCTS) {
+
+    return {
+      ...state, all_products: [...payload], filtered_products: [...payload]
+    }
+  }
+
   throw new Error(`No Matching "${action.type}" - action type`)
 }
 
