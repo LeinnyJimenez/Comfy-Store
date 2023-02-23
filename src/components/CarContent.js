@@ -10,12 +10,12 @@ const CartContent = () => {
 
   const { cart, clearCart } = useCartContext();
 
-  console.log(cart)
-
   return <Wrapper className='section section-center'>
     <CartColumns />
     {
-      cart.map(item => <CartItem key={item.id} {...item} />)
+      cart.map(item => {
+        return <CartItem key={item.id} {...item} />
+      })
     }
     <div className='link-container'>
       <Link to='products' className='link-btn'>continue shopping</Link>
