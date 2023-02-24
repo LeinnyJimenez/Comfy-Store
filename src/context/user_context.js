@@ -3,11 +3,7 @@ import { useAuth0 } from '@auth0/auth0-react'
 
 const UserContext = React.createContext()
 export const UserProvider = ({ children }) => {
-
   const { isAuthenticated, loginWithRedirect, logout, user, isLoading } = useAuth0();
-
-  console.log(isAuthenticated)
-
   const [myUser, setMyUser] = useState(null);
 
   useEffect(() => {
@@ -21,7 +17,7 @@ export const UserProvider = ({ children }) => {
 
 
   return (
-    <UserContext.Provider value={{ loginWithRedirect, logout, myUser }}>{children}</UserContext.Provider>
+    <UserContext.Provider value={{ loginWithRedirect, logout, myUser, isLoading }}>{children}</UserContext.Provider>
   )
 }
 // make sure use
