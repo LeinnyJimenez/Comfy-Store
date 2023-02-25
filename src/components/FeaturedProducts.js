@@ -1,10 +1,10 @@
 import React from 'react'
 import { useProductsContext } from '../context/products_context'
-import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import Error from './Error'
 import Loading from './Loading'
 import Product from './Product'
+import { Link } from 'react-router-dom/cjs/react-router-dom.min'
 
 const FeaturedProducts = () => {
 
@@ -24,11 +24,12 @@ const FeaturedProducts = () => {
         <h2>featured products</h2>
         <div className='underline'></div>
       </div>
-      <section className='section-center featured'>
+      <div className='section-center featured'>
         {
           featured.slice(0, 3).map(product => <Product key={product.id} {...product} />)
         }
-      </section>
+      </div>
+      <Link to='products' className='btn'>all products</Link>
     </Wrapper>
   )
 }
