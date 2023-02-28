@@ -5,8 +5,7 @@ import {
   CardElement,
   useStripe,
   Elements,
-  useElements,
-  PaymentElement
+  useElements
 } from '@stripe/react-stripe-js'
 import axios from 'axios'
 import { useCartContext } from '../context/cart_context'
@@ -52,7 +51,14 @@ const CheckoutForm = () => {
   }
 
   const createPaymentIntent = async () => {
-    console.log('hello from stripe checkout');
+    try {
+      const { data } = await axios.post('/.netlify/functions/create-payment-intent',
+        JSON.stringify({ cart, shipping_fee, total_amount })
+      )
+      setClientSecret(data.clientSecret)
+    } catch (error) {
+      // console.log(error.response)
+    }
   }
 
   useEffect(() => {
@@ -61,14 +67,55 @@ const CheckoutForm = () => {
   }, []);
 
   const handleChange = async (event) => {
+    setDisable(event.empty);
+    setError(event.error ? event.error.message : null);
 
   }
   const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    setProcessing(true);
 
+    const payload = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: {
+        card: elements.getElement(CardElement)
+      }
+    })
+
+    if (payload.error) {
+      setError(`Payment fail ${payload.error.message}`);
+      setProcessing(false);
+    }
+    else {
+      setError(null)
+      setProcessing(false)
+      setSucceeded(true)
+      clearCart()
+      setTimeout(() => {
+        history.push('/')
+      }, 10000)
+    }
   }
 
   return (
     <div>
+      {
+        succeeded ? (
+          <article>
+            <h4>Thanks you</h4>
+            <h4>Your payment was successful</h4>
+            <h4>Redirecting to home page shortly</h4>
+          </article>
+        ) : (
+          <article>
+            <h4>hello, {myUser && myUser.name}</h4>
+            <p>Your total is {formatPrice(shipping_fee + total_amount)} </p>
+            <p>Test Card Number : 4242 4242 4242 4242</p>
+            <p>MM/AA: date after today</p>
+            <p>CVC: 3 numbers</p>
+            <p>CP: 22000</p>
+          </article>
+        )
+      }
       <form id="payment-form" onSubmit={handleSubmit} >
         <CardElement id='card-element' options={cardStyle} onChange={handleChange} />
         <button
