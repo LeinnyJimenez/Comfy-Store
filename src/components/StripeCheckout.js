@@ -98,25 +98,27 @@ const CheckoutForm = () => {
 
   return (
     <div>
-      {
-        succeeded ? (
-          <article>
-            <h4>Thanks you</h4>
-            <h4>Your payment was successful</h4>
-            <h4>Redirecting to home page shortly</h4>
-          </article>
-        ) : (
-          <article>
-            <h4>hello, {myUser && myUser.name}</h4>
-            <p>Your total is {formatPrice(shipping_fee + total_amount)} </p>
-            <p>Test Card Number : 4242 4242 4242 4242</p>
-            <p>MM/AA: date after today</p>
-            <p>CVC: 3 numbers</p>
-            <p>CP: 22000</p>
-          </article>
-        )
-      }
-      <form id="payment-form" onSubmit={handleSubmit} >
+      <div className='form-header'>
+        {
+          succeeded ? (
+            <article>
+              <h4>Thanks you</h4>
+              <h4>Your payment was successful</h4>
+              <h4>Redirecting to home page shortly</h4>
+            </article>
+          ) : (
+            <article>
+              <h4>hello, {myUser && myUser.name}</h4>
+              <p>Your total is <b>{formatPrice(shipping_fee + total_amount)} </b></p>
+              <p>Test Card Number : 4242 4242 4242 4242</p>
+              <p>MM/AA: date after today</p>
+              <p>CVC: 3 numbers</p>
+              <p>CP: 22000</p>
+            </article>
+          )
+        }
+      </div>
+      <form id="payment-form" onSubmit={handleSubmit} className='form'>
         <CardElement id='card-element' options={cardStyle} onChange={handleChange} />
         <button
           disabled={processing || disable || succeeded}
@@ -151,8 +153,19 @@ const StripeCheckout = () => {
   )
 }
 
-const Wrapper = styled.section`
-  form {
+const Wrapper = styled.div`
+  .form-header{
+    width: 30vw;
+    align-self: center;
+    box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
+      0px 2px 5px 0px rgba(50, 50, 93, 0.1),
+      0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
+    border-radius: 7px 7px 0px 0px;
+    border-bottom: none;
+    padding: 40px;
+    margin: 0 auto
+  }
+  .form {
     width: 30vw;
     align-self: center;
     box-shadow: 0px 0px 0px 0.5px rgba(50, 50, 93, 0.1),
@@ -160,6 +173,7 @@ const Wrapper = styled.section`
       0px 1px 1.5px 0px rgba(0, 0, 0, 0.07);
     border-radius: 7px;
     padding: 40px;
+    margin: 0 auto
   }
   input {
     border-radius: 6px;
